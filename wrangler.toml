@@ -1,7 +1,13 @@
-name = "api-beh-uk"
 type = "webpack"
 account_id = "ae2e2411fc6462d1dd8edf4182094548"
 workers_dev = false
-routes = ["https://api.beh.uk/*", "http://api.beh.uk/*"]
 zone_id = "3a863e50669d1744b64a202bfe3f5c74"
 webpack_config = "webpack.config.js"
+
+[env.main]
+name = "api-beh-uk"
+routes = ["https://api.beh.uk/*", "http://api.beh.uk/*"]
+
+[env.dev]
+name = "api-beh-uk-dev"
+routes = ["https://api-dev.beh.uk/*", "http://api-dev.beh.uk/*"]

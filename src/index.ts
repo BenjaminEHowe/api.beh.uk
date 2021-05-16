@@ -1,10 +1,16 @@
-import { Router } from 'itty-router'
+import { Request, Router } from 'itty-router'
 
-import { handleRequest } from './handler'
+import { hello } from './apps/hello'
+
+import { extractClientIp } from './middleware/extractClientIp'
 
 const router = Router()
 
-router.all("/handler", (request, event) => { return handleRequest(event.request) })
+router.get("/hello/v1/:name", extractClientIp, (request: Request & { clientIp: string }) => {
+  const name = request.params?.name || "unknown user"
+  const ip = request.clientIp || "unknown IP"
+  return new Response(hello(name, ip))
+})
 
 router.all("*", () => new Response("404, not found!", { status: 404 }))
 
