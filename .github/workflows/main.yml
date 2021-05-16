@@ -1,15 +1,14 @@
 name: CI
 on:
   push:
-    branches: [ main, dev ]
   pull_request:
-    branches: [ main, dev ]
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -22,6 +21,7 @@ jobs:
       - run: npm run build --if-present
       - run: npm test
       - name: Deploy to Cloudflare Workers with Wrangler
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
         uses: cloudflare/wrangler-action@1.2.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
